@@ -1,65 +1,73 @@
-#include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <raylib.h>
 
-float clamp(float f, float min, float max) {
-  const float t = f < min ? min : f;
-  return t > max ? max : t;
+static const int WINDOW_WIDTH = 1600;
+static const int WINDOW_HEIGHT = 900;
+static const char* WINDOW_TITLE = "Flip";
+
+typedef struct Timer {
+  bool repeat;
+  float duration;
+
+  // bool finished;
+  float elapsed;
+} Timer;
+
+Timer* new_timer(bool repeat, float duration)
+{
+  Timer* t = malloc(sizeof(Timer));
+  t->repeat = repeat;
+  t->duration = duration;
+  // t->finished = false;
+  t->elapsed = 0.0f;
+
+  return t;
 }
 
-//------------------------------------------------------------------------------------
-// Program main entry point
-//------------------------------------------------------------------------------------
-int main(void)
-{
-  // Initialization
-  //--------------------------------------------------------------------------------------
-  const int screenWidth = 1600;
-  const int screenHeight = 900;
-
-  float radius = 40.0f;
-  Vector2 pos = {.x = 0.5f * screenWidth, .y = 0.5f * screenHeight};
-  float vel = 300.0f;
-
-  InitWindow(screenWidth, screenHeight, "Flip");
-
-  SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-  //--------------------------------------------------------------------------------------
-
-  // Main game loop
-  while (!WindowShouldClose())    // Detect window close button or ESC key
-  {
-    float dt =GetFrameTime();
-
-    Vector2 dr = {0};
-    if (IsKeyDown(KEY_W)) dr.y -= 1.0f;
-    if (IsKeyDown(KEY_A)) dr.x -= 1.0f;
-    if (IsKeyDown(KEY_S)) dr.y += 1.0f;
-    if (IsKeyDown(KEY_D)) dr.x += 1.0f;
-
-    float len = sqrt(dr.x*dr.x + dr.y*dr.y);
-    if (len > 0) {
-      dr.x /= len;
-      dr.y /= len;
-    }
-
-    pos.x = clamp(pos.x + vel * dr.x * dt, radius, screenWidth - radius);
-    pos.y = clamp(pos.y + vel * dr.y * dt, radius, screenHeight - radius);
-
-    // Draw
-    //----------------------------------------------------------------------------------
-    BeginDrawing();
-
-    ClearBackground(BLACK);
-    DrawCircle(pos.x, pos.y, radius, RED);
-
-    EndDrawing();
-    //----------------------------------------------------------------------------------
+bool timer_tick(Timer* t, float delta) {
+  t->elapsed += delta;
+  if (t->elapsed > t->duration) {
+    t->elapsed = t->repeat ? 0.0f : t->duration;
+    return true;
   }
 
-  // De-Initialization
-  //--------------------------------------------------------------------------------------
-  CloseWindow();        // Close window and OpenGL context
-  //--------------------------------------------------------------------------------------
+  return false;
+}
 
-  return 0;
+int main()
+{
+  InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
+
+  size_t bird_anim_frame = 0;
+  Timer* bird_anim_timer = new_timer(true, 0.2f);
+  Texture bird_anim_frames[] = {
+    LoadTexture("assets/bluebird-downflap.png"),
+    LoadTexture("assets/bluebird-midflap.png"),
+    LoadTexture("assets/bluebird-upflap.png"),
+  };
+
+  SetTargetFPS(60);
+  while (!WindowShouldClose())
+  {
+    if (IsKeyPressed(KEY_F)) ToggleFullscreen();
+
+    if (timer_tick(bird_anim_timer, GetFrameTime())) {
+      bird_anim_frame = (bird_anim_frame + 1) % (sizeof(bird_anim_frames)/sizeof(bird_anim_frames[0]));
+    }
+
+    BeginDrawing();
+    ClearBackground(BLACK);
+
+    DrawTexture(bird_anim_frames[bird_anim_frame], WINDOW_WIDTH/2, WINDOW_HEIGHT/2, WHITE);
+
+    EndDrawing();
+  }
+
+  for (size_t i = 0; i < sizeof(bird_anim_frames)/sizeof(bird_anim_frames[0]); i++) {
+    UnloadTexture(bird_anim_frames[i]);
+  }
+
+  free(bird_anim_timer);
+  CloseWindow();
 }
