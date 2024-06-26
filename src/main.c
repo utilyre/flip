@@ -1,5 +1,10 @@
-#include <stdio.h>
+#include <math.h>
 #include <raylib.h>
+
+float clamp(float f, float min, float max) {
+  const float t = f < min ? min : f;
+  return t > max ? max : t;
+}
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -13,10 +18,7 @@ int main(void)
 
   float radius = 40.0f;
   Vector2 pos = {.x = 0.5f * screenWidth, .y = 0.5f * screenHeight};
-  Vector2 vel = {.x = 150.0f, .y = 150.0f};
-
-  Color colors[] = {RED, GREEN, BLUE};
-  size_t color_idx = 0;
+  float vel = 300.0f;
 
   InitWindow(screenWidth, screenHeight, "Flip");
 
@@ -28,24 +30,27 @@ int main(void)
   {
     float dt =GetFrameTime();
 
-    pos.x += dt * vel.x;
-    pos.y += dt * vel.y;
+    Vector2 dr = {0};
+    if (IsKeyDown(KEY_W)) dr.y -= 1.0f;
+    if (IsKeyDown(KEY_A)) dr.x -= 1.0f;
+    if (IsKeyDown(KEY_S)) dr.y += 1.0f;
+    if (IsKeyDown(KEY_D)) dr.x += 1.0f;
 
-    if (pos.x <= radius || pos.x >= screenWidth - radius) {
-      vel.x = -vel.x;
-      color_idx = (color_idx + 1) % 3;
+    float len = sqrt(dr.x*dr.x + dr.y*dr.y);
+    if (len > 0) {
+      dr.x /= len;
+      dr.y /= len;
     }
-    if (pos.y <= radius || pos.y >= screenHeight - radius) {
-      vel.y = -vel.y;
-      color_idx = (color_idx + 1) % 3;
-    }
+
+    pos.x = clamp(pos.x + vel * dr.x * dt, radius, screenWidth - radius);
+    pos.y = clamp(pos.y + vel * dr.y * dt, radius, screenHeight - radius);
 
     // Draw
     //----------------------------------------------------------------------------------
     BeginDrawing();
 
     ClearBackground(BLACK);
-    DrawCircle(pos.x, pos.y, radius, colors[color_idx]);
+    DrawCircle(pos.x, pos.y, radius, RED);
 
     EndDrawing();
     //----------------------------------------------------------------------------------
