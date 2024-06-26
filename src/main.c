@@ -26,20 +26,30 @@ int main()
     LoadAndScaleTexture("assets/bluebird-upflap.png", 4),
   };
 
+  const float BIRD_ACCEL = 1500.0f;
+  Vector2 bird_vel = {0};
+  Vector2 bird_pos = {GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
+
   SetTargetFPS(60);
   while (!WindowShouldClose())
   {
-    if (IsKeyPressed(KEY_F)) ToggleFullscreen();
+    float dt = GetFrameTime();
 
-    if (TimerTick(bird_anim_timer, GetFrameTime()))
+    if (IsKeyPressed(KEY_F)) ToggleFullscreen();
+    if (IsKeyPressed(KEY_SPACE)) bird_vel.y = -800.0f;
+
+    if (TimerTick(bird_anim_timer, dt))
     {
       bird_anim_frame = (bird_anim_frame + 1) % (sizeof(bird_anim_frames)/sizeof(bird_anim_frames[0]));
     }
 
-    BeginDrawing();
-    ClearBackground(BLACK);
+    bird_pos.y += 0.5f * BIRD_ACCEL * dt * dt + bird_vel.y * dt;
+    bird_vel.y += BIRD_ACCEL * dt;
 
-    DrawTexture(bird_anim_frames[bird_anim_frame], WINDOW_WIDTH/2, WINDOW_HEIGHT/2, WHITE);
+    BeginDrawing();
+    ClearBackground((Color){78, 192, 202, 255});
+
+    DrawTextureV(bird_anim_frames[bird_anim_frame], bird_pos, WHITE);
 
     EndDrawing();
   }
@@ -48,7 +58,7 @@ int main()
   {
     UnloadTexture(bird_anim_frames[i]);
   }
-
   free(bird_anim_timer);
+
   CloseWindow();
 }
