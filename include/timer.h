@@ -10,5 +10,6 @@ typedef struct Timer {
 
 Timer* NewTimer(bool repeat, float duration);
 bool TimerTick(Timer* t, float delta);
+void UnloadTimer(Timer* t);
 
 #endif
