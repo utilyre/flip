@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <raylib.h>
 
 static const int WINDOW_WIDTH = 1600;
