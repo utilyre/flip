@@ -35,6 +35,13 @@ bool timer_tick(Timer* t, float delta)
   return false;
 }
 
+Texture2D LoadAndScaleTexture(const char* fileName, float factor)
+{
+  Image img = LoadImage(fileName);
+  ImageResize(&img, factor * img.width, factor * img.height);
+  return LoadTextureFromImage(img);
+}
+
 int main()
 {
   InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
@@ -42,9 +49,9 @@ int main()
   size_t bird_anim_frame = 0;
   Timer* bird_anim_timer = new_timer(true, 0.2f);
   Texture bird_anim_frames[] = {
-    LoadTexture("assets/bluebird-downflap.png"),
-    LoadTexture("assets/bluebird-midflap.png"),
-    LoadTexture("assets/bluebird-upflap.png"),
+    LoadAndScaleTexture("assets/bluebird-downflap.png", 4),
+    LoadAndScaleTexture("assets/bluebird-midflap.png", 4),
+    LoadAndScaleTexture("assets/bluebird-upflap.png", 4),
   };
 
   SetTargetFPS(60);
