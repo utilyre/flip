@@ -25,7 +25,8 @@ Timer* new_timer(bool repeat, float duration)
   return t;
 }
 
-bool timer_tick(Timer* t, float delta) {
+bool timer_tick(Timer* t, float delta)
+{
   t->elapsed += delta;
   if (t->elapsed > t->duration) {
     t->elapsed = t->repeat ? 0.0f : t->duration;
@@ -52,7 +53,8 @@ int main()
   {
     if (IsKeyPressed(KEY_F)) ToggleFullscreen();
 
-    if (timer_tick(bird_anim_timer, GetFrameTime())) {
+    if (timer_tick(bird_anim_timer, GetFrameTime()))
+    {
       bird_anim_frame = (bird_anim_frame + 1) % (sizeof(bird_anim_frames)/sizeof(bird_anim_frames[0]));
     }
 
@@ -64,7 +66,8 @@ int main()
     EndDrawing();
   }
 
-  for (size_t i = 0; i < sizeof(bird_anim_frames)/sizeof(bird_anim_frames[0]); i++) {
+  for (size_t i = 0; i < sizeof(bird_anim_frames)/sizeof(bird_anim_frames[0]); i++)
+  {
     UnloadTexture(bird_anim_frames[i]);
   }
 
