@@ -1,39 +1,11 @@
 #include <stdlib.h>
 #include <raylib.h>
 
+#include <timer.h>
+
 static const int WINDOW_WIDTH = 1600;
 static const int WINDOW_HEIGHT = 900;
 static const char* WINDOW_TITLE = "Flip";
-
-typedef struct Timer {
-  bool repeat;
-  float duration;
-
-  // bool finished;
-  float elapsed;
-} Timer;
-
-Timer* new_timer(bool repeat, float duration)
-{
-  Timer* t = malloc(sizeof(Timer));
-  t->repeat = repeat;
-  t->duration = duration;
-  // t->finished = false;
-  t->elapsed = 0.0f;
-
-  return t;
-}
-
-bool timer_tick(Timer* t, float delta)
-{
-  t->elapsed += delta;
-  if (t->elapsed > t->duration) {
-    t->elapsed = t->repeat ? 0.0f : t->duration;
-    return true;
-  }
-
-  return false;
-}
 
 Texture2D LoadAndScaleTexture(const char* fileName, float factor)
 {
@@ -47,7 +19,7 @@ int main()
   InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
 
   size_t bird_anim_frame = 0;
-  Timer* bird_anim_timer = new_timer(true, 0.2f);
+  Timer* bird_anim_timer = NewTimer(true, 0.2f);
   Texture bird_anim_frames[] = {
     LoadAndScaleTexture("assets/bluebird-downflap.png", 4),
     LoadAndScaleTexture("assets/bluebird-midflap.png", 4),
@@ -59,7 +31,7 @@ int main()
   {
     if (IsKeyPressed(KEY_F)) ToggleFullscreen();
 
-    if (timer_tick(bird_anim_timer, GetFrameTime()))
+    if (TimerTick(bird_anim_timer, GetFrameTime()))
     {
       bird_anim_frame = (bird_anim_frame + 1) % (sizeof(bird_anim_frames)/sizeof(bird_anim_frames[0]));
     }
