@@ -2,8 +2,8 @@
 
 #include <bird.h>
 
-static const int WINDOW_WIDTH = 1600;
-static const int WINDOW_HEIGHT = 900;
+static const int WINDOW_WIDTH = 900;
+static const int WINDOW_HEIGHT = 16 * WINDOW_WIDTH / 9;
 static const char* WINDOW_TITLE = "Flip";
 
 static const Color BACKGROUND = {78, 192, 202, 255};
