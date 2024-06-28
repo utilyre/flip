@@ -2,6 +2,8 @@
 #define BIRD_H
 
 #include <raylib.h>
+
+#include <assets.h>
 #include <anim.h>
 
 typedef struct Bird {
@@ -11,7 +13,7 @@ typedef struct Bird {
   Anim* anim;
 } Bird;
 
-Bird* NewBird(const char* name);
+Bird* NewBird(Assets assets);
 void DelBird(Bird* b);
 void BirdUpdate(Bird* b);
 void BirdDraw(Bird* b);

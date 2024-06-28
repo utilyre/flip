@@ -1,18 +1,18 @@
 #include <raylib.h>
 
+#include <assets.h>
 #include <bird.h>
 
-static const int WINDOW_WIDTH = 900;
-static const int WINDOW_HEIGHT = 16 * WINDOW_WIDTH / 9;
+static const int WINDOW_WIDTH = 3 * 288;
+static const int WINDOW_HEIGHT = 3 * 512;
 static const char* WINDOW_TITLE = "Flip";
-
-static const Color BACKGROUND = {78, 192, 202, 255};
 
 int main()
 {
   InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
 
-  Bird* bird = NewBird("bluebird");
+  Assets assets = LoadAssets();
+  Bird* bird = NewBird(assets);
 
   SetTargetFPS(60);
   while (!WindowShouldClose())
@@ -21,7 +21,9 @@ int main()
     BirdUpdate(bird);
 
     BeginDrawing();
-    ClearBackground(BACKGROUND);
+
+    DrawTexture(assets.background, 0, 0, WHITE);
+    DrawTexture(assets.base, 0, WINDOW_HEIGHT - assets.base.height, WHITE);
 
     BirdDraw(bird);
 
@@ -29,5 +31,6 @@ int main()
   }
 
   DelBird(bird);
+  UnloadAssets(assets);
   CloseWindow();
 }

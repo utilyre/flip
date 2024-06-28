@@ -1,47 +1,25 @@
-#include <stdio.h>
-#include <string.h>
 #include <raylib.h>
 
+#include <assets.h>
 #include <bird.h>
 
-static Texture2D LoadAndScaleTexture(const char* fileName, float factor)
+static const float BIRD_ANIM_DURATION = 0.6f;
+
+Bird* NewBird(Assets assets)
 {
-  Image img = LoadImage(fileName);
-  ImageResize(&img, factor * img.width, factor * img.height);
-  Texture2D tex = LoadTextureFromImage(img);
-  UnloadImage(img);
-  return tex;
-}
-
-static Texture2D* LoadFrames(const char* name)
-{
-  char downflap[strlen(name) + 20 + 1];
-  char midflap[strlen(name) + 19 + 1];
-  char upflap[strlen(name) + 18 + 1];
-  sprintf(downflap, "assets/%s-downflap.png", name);
-  sprintf(midflap, "assets/%s-midflap.png", name);
-  sprintf(upflap, "assets/%s-upflap.png", name);
-
-  Texture2D* frames = malloc(3 * sizeof(Texture2D));
-  frames[0] = LoadAndScaleTexture(downflap, 2.5f);
-  frames[1] = LoadAndScaleTexture(midflap, 2.5f);
-  frames[2] = LoadAndScaleTexture(upflap, 2.5f);
-
-  return frames;
-}
-
-Bird* NewBird(const char* name)
-{
-  Texture2D* frames = LoadFrames(name);
-
   Bird* b = malloc(sizeof(Bird));
   b->accel_y = 1500.0f;
   b->vel_y = 0.0f;
   b->pos = (Vector2){
-    (GetScreenWidth() - frames[0].width) / 2.0f,
-    (GetScreenHeight() - frames[0].height) / 2.0f,
+    (GetScreenWidth() - assets.bird_downflap.width) / 2.0f,
+    (GetScreenHeight() - assets.bird_downflap.height) / 2.0f,
   };
-  b->anim = NewAnim(frames, 3, 0.2f);
+
+  Texture2D* frames = malloc(3 * sizeof(Texture2D));
+  frames[0] = assets.bird_downflap;
+  frames[1] = assets.bird_midflap;
+  frames[2] = assets.bird_upflap;
+  b->anim = NewAnim(frames, 3, BIRD_ANIM_DURATION / 3);
 
   return b;
 }
