@@ -24,11 +24,8 @@ int main()
     BeginDrawing();
 
     DrawTexture(assets.background, 0, 0, WHITE);
-
     PipesDraw(pipes);
-
     DrawTexture(assets.base, 0, GetScreenHeight() - assets.base.height, WHITE);
-
     BirdDraw(player);
 
     EndDrawing();
