@@ -9,6 +9,8 @@ typedef struct Assets {
   Texture2D bird_downflap;
   Texture2D bird_midflap;
   Texture2D bird_upflap;
+  Texture2D pipe_above;
+  Texture2D pipe_below;
 } Assets;
 
 Assets LoadAssets();

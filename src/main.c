@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <time.h>
 #include <raylib.h>
 
 #include <assets.h>
@@ -9,20 +11,38 @@ static const char* WINDOW_TITLE = "Flip";
 
 int main()
 {
+  srand(time(0));
   InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
 
   Assets assets = LoadAssets();
   Bird* bird = NewBird(assets);
 
+  const float PIPE_VEL_X = -250.0f;
+  const float HOLE_SIZE = 250.0f;
+  const float HOLE_PADDING = 100.0f;
+  Vector2 hole = {
+    0.5f * (WINDOW_WIDTH - assets.pipe_above.width),
+    rand() % (int)(WINDOW_HEIGHT - HOLE_SIZE - assets.base.height - 2.0f * HOLE_PADDING) + HOLE_PADDING,
+  };
+
   SetTargetFPS(60);
   while (!WindowShouldClose())
   {
-    if (IsKeyPressed(KEY_F)) ToggleFullscreen();
     BirdUpdate(bird);
+
+    hole.x += PIPE_VEL_X * GetFrameTime();
+    if (hole.x <= -assets.pipe_above.width) {
+      hole.x = GetScreenWidth();
+      hole.y = rand() % (int)(WINDOW_HEIGHT - HOLE_SIZE - assets.base.height - 2.0f * HOLE_PADDING) + HOLE_PADDING;
+    }
 
     BeginDrawing();
 
     DrawTexture(assets.background, 0, 0, WHITE);
+
+    DrawTexture(assets.pipe_above, hole.x, hole.y - assets.pipe_above.height, WHITE);
+    DrawTexture(assets.pipe_below, hole.x, hole.y + HOLE_SIZE, WHITE);
+
     DrawTexture(assets.base, 0, WINDOW_HEIGHT - assets.base.height, WHITE);
 
     BirdDraw(bird);
