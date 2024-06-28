@@ -32,7 +32,7 @@ void DelBird(Bird* b)
 
 void BirdUpdate(Bird* b)
 {
-  if (IsKeyPressed(KEY_SPACE)) b->vel_y = -800.0f;
+  if (IsKeyPressed(KEY_SPACE)) b->vel_y = -600.0f;
 
   float dt = GetFrameTime();
   AnimTick(b->anim, dt);
