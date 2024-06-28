@@ -22,20 +22,12 @@ int main()
   const float HOLE_SIZE = 250.0f;
   const float HOLE_PADDING = 100.0f;
 
-  Vector2 pipes[] = {
-    {
-      WINDOW_WIDTH,
-      rand() % (int)(WINDOW_HEIGHT - HOLE_SIZE - assets.base.height - 2.0f * HOLE_PADDING) + HOLE_PADDING,
-    },
-    {
-      WINDOW_WIDTH + PIPE_SPACING + assets.pipe_above.width,
-      rand() % (int)(WINDOW_HEIGHT - HOLE_SIZE - assets.base.height - 2.0f * HOLE_PADDING) + HOLE_PADDING,
-    },
-    {
-      WINDOW_WIDTH + 2.0f * (PIPE_SPACING + assets.pipe_above.width),
-      rand() % (int)(WINDOW_HEIGHT - HOLE_SIZE - assets.base.height - 2.0f * HOLE_PADDING) + HOLE_PADDING,
-    },
-  };
+  Vector2 pipes[3];
+  for (size_t i = 0; i < 3; i++)
+  {
+    pipes[i].x = WINDOW_WIDTH + i * (PIPE_SPACING + assets.pipe_above.width);
+    pipes[i].y = HOLE_PADDING + rand() % (int)(WINDOW_HEIGHT - HOLE_SIZE - 2.0f * HOLE_PADDING - assets.base.height);
+  }
 
   SetTargetFPS(60);
   while (!WindowShouldClose())
