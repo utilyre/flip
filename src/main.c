@@ -15,7 +15,7 @@ int main()
   InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
 
   Assets assets = LoadAssets();
-  Bird* bird = NewBird(assets);
+  Bird player = NewBird(assets);
 
   const float PIPE_VEL_X = -250.0f;
   const float HOLE_SIZE = 250.0f;
@@ -28,7 +28,7 @@ int main()
   SetTargetFPS(60);
   while (!WindowShouldClose())
   {
-    BirdUpdate(bird);
+    BirdUpdate(&player);
 
     hole.x += PIPE_VEL_X * GetFrameTime();
     if (hole.x <= -assets.pipe_above.width) {
@@ -45,12 +45,12 @@ int main()
 
     DrawTexture(assets.base, 0, WINDOW_HEIGHT - assets.base.height, WHITE);
 
-    BirdDraw(bird);
+    BirdDraw(player);
 
     EndDrawing();
   }
 
-  DelBird(bird);
+  DelBird(player);
   UnloadAssets(assets);
   CloseWindow();
 }

@@ -1,31 +1,29 @@
 #include <anim.h>
 
-Anim* NewAnim(Texture2D* frames, size_t len, float duration)
+Anim NewAnim(float duration, Texture2D* frames, size_t len)
 {
-  Anim* a = malloc(sizeof(Anim));
-  a->curr = 0;
-  a->frames_len = len;
-  a->frames = frames;
-  a->timer = NewTimer(true, duration);
-  return a;
+  return (Anim){
+    .timer = NewTimer(true, duration),
+    .frames = frames,
+    .frames_len = len,
+    .curr = 0,
+  };
+}
+
+void DelAnim(Anim a)
+{
+  free(a.frames);
+}
+
+Texture2D AnimCurrent(Anim a)
+{
+  return a.frames[a.curr];
 }
 
 void AnimTick(Anim* a, float delta)
 {
-  if (TimerTick(a->timer, delta))
+  if (TimerTick(&a->timer, delta))
   {
     a->curr = (a->curr + 1) % a->frames_len;
   }
-}
-
-Texture2D AnimCurrent(const Anim* a)
-{
-  return a->frames[a->curr];
-}
-
-void DelAnim(Anim* a)
-{
-  DelTimer(a->timer);
-  free(a->frames);
-  free(a);
 }

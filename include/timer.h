@@ -4,12 +4,10 @@
 typedef struct Timer {
   bool repeat;
   float duration;
-
   float elapsed;
 } Timer;
 
-Timer* NewTimer(bool repeat, float duration);
-void DelTimer(Timer* t);
+Timer NewTimer(bool repeat, float duration);
 bool TimerTick(Timer* t, float delta);
 
 #endif

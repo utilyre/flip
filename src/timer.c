@@ -1,15 +1,12 @@
-#include <stdlib.h>
-
 #include <timer.h>
 
-Timer* NewTimer(bool repeat, float duration)
+Timer NewTimer(bool repeat, float duration)
 {
-  Timer* t = malloc(sizeof(Timer));
-  t->repeat = repeat;
-  t->duration = duration;
-  t->elapsed = 0.0f;
-
-  return t;
+  return (Timer){
+    .repeat = repeat,
+    .duration = duration,
+    .elapsed = 0.0f,
+  };
 }
 
 bool TimerTick(Timer* t, float delta)
@@ -21,9 +18,4 @@ bool TimerTick(Timer* t, float delta)
   }
 
   return false;
-}
-
-void DelTimer(Timer* t)
-{
-  free(t);
 }

@@ -7,15 +7,15 @@
 #include <timer.h>
 
 typedef struct Anim {
-  size_t curr;
-  size_t frames_len;
+  Timer timer;
   Texture2D* frames;
-  Timer* timer;
+  size_t frames_len;
+  size_t curr;
 } Anim;
 
-Anim* NewAnim(Texture2D* frames, size_t len, float duration);
-void DelAnim(Anim* a);
+Anim NewAnim(float duration, Texture2D* frames, size_t len);
+void DelAnim(Anim a);
+Texture2D AnimCurrent(Anim a);
 void AnimTick(Anim* a, float delta);
-Texture2D AnimCurrent(const Anim* a);
 
 #endif

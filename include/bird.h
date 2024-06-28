@@ -10,12 +10,12 @@ typedef struct Bird {
   float accel_y;
   float vel_y;
   Vector2 pos;
-  Anim* anim;
+  Anim anim;
 } Bird;
 
-Bird* NewBird(Assets assets);
-void DelBird(Bird* b);
+Bird NewBird(Assets assets);
+void DelBird(Bird b);
 void BirdUpdate(Bird* b);
-void BirdDraw(Bird* b);
+void BirdDraw(Bird b);
 
 #endif
