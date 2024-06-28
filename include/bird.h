@@ -12,7 +12,7 @@ typedef struct Bird {
 } Bird;
 
 Bird* NewBird(const char* name);
-void UnloadBird(Bird* b);
+void DelBird(Bird* b);
 void BirdUpdate(Bird* b);
 void BirdDraw(Bird* b);
 

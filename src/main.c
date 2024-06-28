@@ -28,6 +28,6 @@ int main()
     EndDrawing();
   }
 
-  UnloadBird(bird);
+  DelBird(bird);
   CloseWindow();
 }

@@ -9,7 +9,7 @@ typedef struct Timer {
 } Timer;
 
 Timer* NewTimer(bool repeat, float duration);
+void DelTimer(Timer* t);
 bool TimerTick(Timer* t, float delta);
-void UnloadTimer(Timer* t);
 
 #endif

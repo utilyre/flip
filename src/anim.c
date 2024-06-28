@@ -23,9 +23,9 @@ Texture2D AnimCurrent(const Anim* a)
   return a->frames[a->curr];
 }
 
-void UnloadAnim(Anim* a)
+void DelAnim(Anim* a)
 {
-  UnloadTimer(a->timer);
+  DelTimer(a->timer);
   free(a->frames);
   free(a);
 }

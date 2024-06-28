@@ -34,9 +34,9 @@ Bird* NewBird(const char* name)
   return b;
 }
 
-void UnloadBird(Bird* b)
+void DelBird(Bird* b)
 {
-  UnloadAnim(b->anim);
+  DelAnim(b->anim);
   free(b);
 }
 

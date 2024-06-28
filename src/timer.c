@@ -23,7 +23,7 @@ bool TimerTick(Timer* t, float delta)
   return false;
 }
 
-void UnloadTimer(Timer* t)
+void DelTimer(Timer* t)
 {
   free(t);
 }
