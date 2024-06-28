@@ -8,7 +8,9 @@ static Texture2D LoadAndScaleTexture(const char* fileName, float factor)
 {
   Image img = LoadImage(fileName);
   ImageResize(&img, factor * img.width, factor * img.height);
-  return LoadTextureFromImage(img);
+  Texture2D tex = LoadTextureFromImage(img);
+  UnloadImage(img);
+  return tex;
 }
 
 static Texture2D* LoadFrames(const char* name)
