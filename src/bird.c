@@ -4,9 +4,6 @@
 #include <anim.h>
 #include <bird.h>
 
-static const float BIRD_JUMP_SPEED = 600.0f;
-static const float BIRD_ANIM_DURATION = 0.6f;
-
 Bird NewBird(Assets assets)
 {
   Texture2D* frames = malloc(3 * sizeof(Texture2D));
@@ -16,12 +13,13 @@ Bird NewBird(Assets assets)
 
   return (Bird){
     .accel_y = 1500.0f,
+    .jmp_vel_y = -600.0f,
     .vel_y = 0.0f,
     .pos = (Vector2){
       0.5f * (GetScreenWidth() - assets.bird_downflap.width),
       0.5f * (GetScreenHeight() - assets.bird_downflap.height),
     },
-    .anim = NewAnim(BIRD_ANIM_DURATION / 3, frames, 3),
+    .anim = NewAnim(0.2f, frames, 3),
 };
 }
 
@@ -32,7 +30,7 @@ void DelBird(Bird b)
 
 void BirdUpdate(Bird* b)
 {
-  if (IsKeyPressed(KEY_SPACE)) b->vel_y = -BIRD_JUMP_SPEED;
+  if (IsKeyPressed(KEY_SPACE)) b->vel_y = b->jmp_vel_y;
 
   float dt = GetFrameTime();
   AnimTick(&b->anim, dt);

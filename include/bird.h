@@ -8,6 +8,7 @@
 
 typedef struct Bird {
   float accel_y;
+  float jmp_vel_y;
   float vel_y;
   Vector2 pos;
   Anim anim;
