@@ -8,9 +8,11 @@
 
 typedef struct Pipes {
   float padding;
-  float spacing;
+  float spacing; // TODO: increase as the time goes
   float base_height;
   float hole_size;
+  float min_speed;
+  float max_speed;
   float vel_x;
   Vector2* pipes;
   size_t pipes_len;
