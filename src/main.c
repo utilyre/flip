@@ -21,7 +21,7 @@ int main()
   const float HOLE_SIZE = 250.0f;
   const float HOLE_PADDING = 100.0f;
   Vector2 hole = {
-    0.5f * (WINDOW_WIDTH - assets.pipe_above.width),
+    WINDOW_WIDTH,
     rand() % (int)(WINDOW_HEIGHT - HOLE_SIZE - assets.base.height - 2.0f * HOLE_PADDING) + HOLE_PADDING,
   };
 
