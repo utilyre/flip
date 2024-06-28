@@ -6,14 +6,10 @@
 #include <bird.h>
 #include <pipes.h>
 
-static const int WINDOW_WIDTH = 3 * 288;
-static const int WINDOW_HEIGHT = 3 * 512;
-static const char* WINDOW_TITLE = "Flip";
-
 int main()
 {
   srand(time(0));
-  InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
+  InitWindow(3 * 288, 3 * 512, "Flip");
 
   Assets assets = LoadAssets();
   Bird player = NewBird(assets);
@@ -31,7 +27,7 @@ int main()
 
     PipesDraw(pipes);
 
-    DrawTexture(assets.base, 0, WINDOW_HEIGHT - assets.base.height, WHITE);
+    DrawTexture(assets.base, 0, GetScreenHeight() - assets.base.height, WHITE);
 
     BirdDraw(player);
 
